@@ -4,7 +4,6 @@ const path = require("path");
 const express = require("express");
 const fs = require("fs");
 var session = require("express-session");
-const { application } = require("express");
 
 const app = express();
 const server = http.createServer(app);
@@ -17,16 +16,16 @@ app.use(session({ secret: "abc" }));
 app.set("port", process.env.PORT || 3000);
 
 // secção de login
-app.use("/public/acesso-restrito/*", (req, res, next) => {
+app.use("/acesso-restrito/*", (req, res, next) => {
   if (req.session.nome) {
     next();
   } else {
-    res.redirect("/");
+    res.redirect("/index.html");
   }
 });
 
 // artigos estaticos
-app.use(express.static(__dirname));
+app.use(express.static(path.join(__dirname, "public")));
 
 //start do server
 server.listen(app.get("port"), () => {
